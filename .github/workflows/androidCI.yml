@@ -14,9 +14,9 @@ jobs:
       matrix:
         # TODO 29 fails due to Mockito issues, probably reproducible locally
         # 22-28 work (some of them, with SdkExclude restrictions)
-        EMULATOR_API: [33]
+        EMULATOR_API: [31]
         include:
-          - EMULATOR_API: 33
+          - EMULATOR_API: 31
             EMULATOR_ARCH: x86
     steps:
       - uses: actions/checkout@v2
