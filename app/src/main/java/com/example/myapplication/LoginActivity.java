@@ -19,34 +19,32 @@ public class LoginActivity extends HttpActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private String status="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        PAGE= "login.php";
+        PAGE = "login.php";
         emailEditText = findViewById(R.id.login_email);
         passwordEditText = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                // Set POST parameters
                 Map<String, String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("password", password);
+                params.put("email", emailEditText.getText().toString());
+                params.put("password", passwordEditText.getText().toString());
                 send(params);
             }
         });
     }
 
     @Override
-    protected void responseRecieved(String response,Map<String, String> params) {
+    protected void responseReceived(String response, Map<String, String> params) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            String status = jsonObject.getString("status");
+            status = jsonObject.getString("status");
             if (status.equals("success")) {
                 JSONObject userObject = jsonObject.getJSONObject("user_info");
                 String family_name = userObject.getString("family_name");
@@ -71,11 +69,14 @@ public class LoginActivity extends HttpActivity {
                 finish();
             } else {
                 String errorMessage = jsonObject.getString("message");
-                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    public String getLastStatus() {
+        return this.status;
+    }
 }

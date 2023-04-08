@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
+
 public class SignUpActivity extends HttpActivity {
 
     private EditText emailEditText;
@@ -25,9 +26,10 @@ public class SignUpActivity extends HttpActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        PAGE= "signup.php";
+        PAGE = "signup.php";
         familyEditText = findViewById(R.id.family_name);
-        firstEditText = findViewById(R.id.first_name);;
+        firstEditText = findViewById(R.id.first_name);
+        ;
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
         ageEditText = findViewById(R.id.age);
@@ -37,27 +39,21 @@ public class SignUpActivity extends HttpActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                String family_name = familyEditText.getText().toString();
-                String first_name = firstEditText.getText().toString();
-                String age = ageEditText.getText().toString();
-                String address = addressEditText.getText().toString();
                 Map<String, String> params = new HashMap<>();
-                params.put("email",email);
-                params.put("family_name", family_name);
-                params.put("first_name", first_name);
-                params.put("password", password);
-                params.put("age", age);
-                params.put("address", address);
+                params.put("email", emailEditText.getText().toString());
+                params.put("family_name", familyEditText.getText().toString());
+                params.put("first_name", firstEditText.getText().toString());
+                params.put("password", passwordEditText.getText().toString());
+                params.put("age", ageEditText.getText().toString());
+                params.put("address", addressEditText.getText().toString());
                 send(params);
             }
         });
     }
 
     @Override
-    protected void responseRecieved(String response, Map<String, String> params) {
-        if(response.trim().equals("success")){
+    protected void responseReceived(String response, Map<String, String> params) {
+        if (response.trim().equals("success")) {
             // Save user information to shared preferences
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this);
             SharedPreferences.Editor editor = preferences.edit();
@@ -71,11 +67,10 @@ public class SignUpActivity extends HttpActivity {
             Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
-        }else{
-            Toast.makeText(SignUpActivity.this, "Sign Up Failed: "+response, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(SignUpActivity.this, getResources().getString(R.string.sign_up_failed) + response, Toast.LENGTH_SHORT).show();
         }
     }
-
 
 
 }
