@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     env:
       EMULATOR_API_LEVEL: 30
@@ -16,21 +15,19 @@ jobs:
       EMULATOR_NAME: test
       AVD_CONFIG: "hw.lcd.height=1280 hw.lcd.width=720 hw.device.name=Pixel_3a_API_30"
       APK_PATH: "app/build/outputs/apk/debug/app-debug.apk"
-
     steps:
-      - uses: actions/checkout@v3
-      - name: set up JDK 11
-        uses: actions/setup-java@v3
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'temurin'
-          cache: gradle
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
       - name: Install Android Build Tools
-        run: echo y | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
-      - name: Install Android Emulator
-        run: echo y | sdkmanager "emulator"
+        run: sudo apt-get update && sudo apt-get install -y build-essential default-jdk wget unzip && wget -q https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip && unzip -q commandlinetools-linux-7302050_latest.zip -d "$ANDROID_SDK_ROOT/cmdline-tools" && rm commandlinetools-linux-7302050_latest.zip
+        env:
+          ANDROID_SDK_ROOT: /opt/android-sdk
+          ANDROID_HOME: /opt/android-sdk
+          PATH: $PATH:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$ANDROID_SDK_ROOT/platform-tools
       - name: Create Android Emulator
         run: echo no | avdmanager create avd --force --name=$EMULATOR_NAME --package='system-images;android-$EMULATOR_API_LEVEL;default;x86_64' --abi='default/x86_64' --device=$AVD_CONFIG
       - name: Launch Android Emulator
@@ -40,8 +37,13 @@ jobs:
           adb shell input keyevent 82 &
       - name: Build and Run Tests on Emulator
         run: |
-          ./gradlew clean
-          ./gradlew assembleDebug
-          ./gradlew assembleAndroidTest
-          ./gradlew createDebugCoverageReport
-          run: ./gradlew clean createDebugCoverageReport sonarqube
+          ./gradlew clean createDebugCoverageReport sonarqube
+        env:
+          ANDROID_HOME: /opt/android-sdk
+          PATH: $PATH:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$ANDROID_SDK_ROOT/platform-tools
+      - name: Publish Test Report
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test Report
+          path: /app/build/reports/coverage/androidTest/debug/connected/report.xml
