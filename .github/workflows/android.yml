@@ -1,0 +1,32 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: '11'
+
+    - name: Build and test
+      run: ./gradlew build connectedCheck jacocoTestReport --info
+
+    - name: Analyze with SonarQube
+      uses: sonarsource/sonarqube-scan-action@v1
+      env:
+        ORGANIZATION: charafeddinemechalikh
+        PROJECT_KEY: android_project_key
+      with:
+        projectBaseDir: .
+        extraProperties: |
+          sonar.coverage.jacoco.xmlReportPaths=/app/build/reports/coverage/androidTest/debug/connected/report.xml
+        # You will need to add other properties to configure SonarQube, such as sonar.host.url, sonar.login, etc.
