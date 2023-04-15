@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.View;
 
+import android.util.Log;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
@@ -47,8 +48,7 @@ public void testCorrectCredentials() {
     } catch (InterruptedException e) {
         e.printStackTrace();
     }
-    Log.i("TEST", "Screen size: " + getResources().getConfiguration().screenWidthDp + "dp x " + getResources().getConfiguration().screenHeightDp + "dp");
-
+    
 
     // Assert that the HomeActivity is started
     ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class);
