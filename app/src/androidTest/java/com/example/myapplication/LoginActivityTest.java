@@ -29,34 +29,41 @@ public class LoginActivityTest {
         activityRule.getScenario().onActivity(activity -> decorView = activity.getWindow().getDecorView());
     }
 
-    @Test
-    public void testCorrectCredentials() {
-        Espresso.onView(withId(R.id.login_email)).perform(ViewActions.typeText("correct@example.com"));
-        Espresso.pressBack();
-        onView(withId(R.id.login_password)).perform(ViewActions.typeText("password"));
-        Espresso.pressBack();
-        onView(withId(R.id.login_button)).perform(ViewActions.click());
+   @Test
+public void testCorrectCredentials() {
+    Log.i("TEST", "Starting testCorrectCredentials()");
+    Espresso.onView(withId(R.id.login_email)).perform(ViewActions.typeText("correct@example.com"));
+    Log.i("TEST", "Typed email");
+    Espresso.pressBack();
+    onView(withId(R.id.login_password)).perform(ViewActions.typeText("password"));
+    Log.i("TEST", "Typed password");
+    Espresso.pressBack();
+    onView(withId(R.id.login_button)).perform(ViewActions.click());
+    Log.i("TEST", "Clicked login button");
 
-        // Check if user info is saved to shared preferences
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-        // Assert that the HomeActivity is started
-        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class);
-        scenario.onActivity(activity -> {
-            // Assert that the user information is saved to SharedPreferences
-            SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(activity);
-            assertEquals("correct", preferences.getString("family_name", ""));
-            assertEquals("example", preferences.getString("first_name", ""));
-            assertEquals("correct@example.com", preferences.getString("email", ""));
-            assertEquals(30, preferences.getInt("age", 0));
-            assertEquals("123 Main St", preferences.getString("address", ""));
-        });
+    // Check if user info is saved to shared preferences
+    try {
+        Thread.sleep(10000);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
     }
+    Log.i("TEST", "Screen size: " + getResources().getConfiguration().screenWidthDp + "dp x " + getResources().getConfiguration().screenHeightDp + "dp");
+
+
+    // Assert that the HomeActivity is started
+    ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class);
+    scenario.onActivity(activity -> {
+        Log.i("TEST", "Started HomeActivity");
+        // Assert that the user information is saved to SharedPreferences
+        SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(activity);
+        assertEquals("correct", preferences.getString("family_name", ""));
+        assertEquals("example", preferences.getString("first_name", ""));
+        assertEquals("correct@example.com", preferences.getString("email", ""));
+        assertEquals(30, preferences.getInt("age", 0));
+        assertEquals("123 Main St", preferences.getString("address", ""));
+    });
+}
+
 
     @Test
     public void testIncorrectCredentials() {
@@ -68,7 +75,7 @@ public class LoginActivityTest {
         onView(withId(R.id.login_button)).perform(ViewActions.click());
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
