@@ -12,6 +12,7 @@ sonarqube {
         property "sonar.projectKey", "android_project_key"
         property "sonar.organization", "charafeddinemechalikh"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.login", "d0c992ac827086c2a291ca5962dea74b187291ba"
         property "sonar.projectVersion", "1.0"
         property "sonar.language", "java"
         property "sonar.sources","src/main/java"

@@ -52,8 +52,9 @@ public class LoginActivity extends HttpActivity {
                 String email = userObject.getString("email");
                 int age = userObject.getInt("age");
                 String address = userObject.getString("address");
+                String sessionToken = jsonObject.getString("session_token");
 
-                // Save user information to shared preferences
+                // Save user information and session token to shared preferences
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("family_name", family_name);
@@ -61,6 +62,7 @@ public class LoginActivity extends HttpActivity {
                 editor.putString("email", email);
                 editor.putInt("age", age);
                 editor.putString("address", address);
+                editor.putString("session_token", sessionToken);
                 editor.apply();
 
                 // Start HomeActivity
@@ -75,6 +77,7 @@ public class LoginActivity extends HttpActivity {
             e.printStackTrace();
         }
     }
+
 
     public String getLastStatus() {
         return this.status;

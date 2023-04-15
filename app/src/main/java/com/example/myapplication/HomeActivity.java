@@ -20,7 +20,6 @@ public class HomeActivity extends HttpActivity {
 
     @Override
     protected void responseReceived(String response, Map<String, String> params) {
-
     }
 
     @Override

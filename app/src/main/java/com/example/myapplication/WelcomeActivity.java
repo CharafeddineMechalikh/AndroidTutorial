@@ -9,12 +9,20 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) { //+1
         super.onCreate(savedInstanceState);
+        checkLogin();
+        setContentView(R.layout.activity_welcome);
+        Button getStartedButton = findViewById(R.id.get_started_button);
+        getStartedButton.setOnClickListener(this);
+        Button alreadyHaveAccountButton = findViewById(R.id.already_have_account_button);
+        alreadyHaveAccountButton.setOnClickListener(this);
+    }
 
+    private void checkLogin() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(WelcomeActivity.this);
         String email = preferences.getString("email", "");
         if (!"".equals(email)) {
@@ -22,26 +30,23 @@ public class WelcomeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
 
-        setContentView(R.layout.activity_welcome);
-        Button getStartedButton = findViewById(R.id.get_started_button);
-        getStartedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, SignUpActivity.class);
+    @Override
+    public void onClick(View v) {
+        Intent intent;
+        switch (v.getId()){
+            case R.id.already_have_account_button:
+                intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
-            }
-        });
-
-        Button alreadyHaveAccountButton = findViewById(R.id.already_have_account_button);
-        alreadyHaveAccountButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                break;
+            case R.id.get_started_button:
+                intent = new Intent(WelcomeActivity.this, SignUpActivity.class);
                 startActivity(intent);
                 finish();
-            }
-        });
+                break;
+            default: break;
+        }
     }
 }

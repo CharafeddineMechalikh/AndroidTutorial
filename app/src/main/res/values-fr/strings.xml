@@ -12,4 +12,5 @@
     <string name="already_have_an_account">Vous avez déjà un compte</string>
     <string name="sign_up_failed">Échec de l\'inscription :</string>
     <string name="verify_your_Internet">Vérifiez votre connexion Internet</string>
+    <string name="login_button">Login</string>
 </resources>

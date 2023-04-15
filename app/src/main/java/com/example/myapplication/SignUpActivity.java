@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,24 +56,38 @@ public class SignUpActivity extends HttpActivity {
 
     @Override
     protected void responseReceived(String response, Map<String, String> params) {
-        if (response.trim().equals("success")) {
-            // Save user information to shared preferences
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("family_name", params.get("family_name"));
-            editor.putString("first_name", params.get("first_name"));
-            editor.putString("email", params.get("email"));
-            editor.putInt("age", Integer.parseInt(params.get("age")));
-            editor.putString("address", params.get("address"));
-            editor.apply();
-            // Start HomeActivity
-            Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(SignUpActivity.this, getResources().getString(R.string.sign_up_failed) + response, Toast.LENGTH_SHORT).show();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String status = jsonObject.getString("status");
+            if (status.equals("success")) {
+                // Get user information
+                JSONObject userObject = jsonObject.getJSONObject("user_info");
+                String family_name = userObject.getString("family_name");
+                String first_name = userObject.getString("first_name");
+                String email = userObject.getString("email");
+                int age = userObject.getInt("age");
+                String address = userObject.getString("address");
+
+                // Save user information to shared preferences
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("family_name", family_name);
+                editor.putString("first_name", first_name);
+                editor.putString("email", email);
+                editor.putInt("age", age);
+                editor.putString("address", address);
+                editor.apply();
+
+                // Start HomeActivity
+                Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                String errorMessage = jsonObject.getString("message");
+                Toast.makeText(SignUpActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
-
-
 }
