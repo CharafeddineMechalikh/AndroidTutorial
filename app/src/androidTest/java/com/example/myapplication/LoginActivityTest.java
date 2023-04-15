@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
@@ -11,6 +12,7 @@ import android.view.View;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.junit.Before;
@@ -44,10 +46,10 @@ public class LoginActivityTest {
             e.printStackTrace();
         }
 
+
         // Check if HomeActivity is launched after successful login
         onView(withId(R.id.welcome_textview))
-                       .check(ViewAssertions.matches(isDisplayed()));
-
+                .check(ViewAssertions.matches(isDisplayed()));
         // Assert that the HomeActivity is started
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class);
         scenario.onActivity(activity -> {
