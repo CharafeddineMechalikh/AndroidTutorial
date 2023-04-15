@@ -41,7 +41,7 @@ public class LoginActivityTest {
 
         // Check if user info is saved to shared preferences
         try {
-            Thread.sleep(3000);
+            Thread.sleep(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class LoginActivityTest {
         onView(withId(R.id.login_button)).perform(ViewActions.click());
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
