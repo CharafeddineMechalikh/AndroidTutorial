@@ -46,14 +46,14 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: emulator-${{ matrix.android.version }}-${{ matrix.android.arch }}
+          key: emulator-${{ matrix.EMULATOR_API }}-${{ matrix.EMULATOR_ARCH }}
 
-      - name: create and cache AVD for API ${{ matrix.android.version }}
+      - name: create and cache AVD for API ${{ matrix.EMULATOR_API }}
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.android.version }}
-          arch: ${{ matrix.android.arch }}
+          api-level: ${{ matrix.EMULATOR_API }}
+          arch: ${{ matrix.EMULATOR_ARCH }}
           target: 'google_apis'
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -63,8 +63,8 @@ jobs:
       - name: run tests on API ${{ matrix.android.version }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.android.version }}
-          arch: ${{ matrix.android.arch }}
+          api-level: ${{ matrix.EMULATOR_API }}
+          arch: ${{ matrix.EMULATOR_ARCH }}
           target: 'google_apis'
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
