@@ -22,7 +22,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.Map;
 
 public abstract class HttpActivity extends AppCompatActivity implements ConnectivityChangeListener {
-    protected final String ADDRESS = "http://192.168.78.185/";
+    protected final String ADDRESS = "https://appmobproject.000webhostapp.com/";
     protected String PAGE;
     NetworkService networkService;
     boolean mBound = false;
