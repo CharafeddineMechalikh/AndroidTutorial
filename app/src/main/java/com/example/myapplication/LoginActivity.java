@@ -53,6 +53,7 @@ public class LoginActivity extends HttpActivity {
                 int age = userObject.getInt("age");
                 String address = userObject.getString("address");
                 String sessionToken = jsonObject.getString("session_token");
+                String sessionId = jsonObject.getString("session_id");
 
                 // Save user information and session token to shared preferences
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
@@ -63,6 +64,7 @@ public class LoginActivity extends HttpActivity {
                 editor.putInt("age", age);
                 editor.putString("address", address);
                 editor.putString("session_token", sessionToken);
+                editor.putString("session_id", sessionId);
                 editor.apply();
 
                 // Start HomeActivity

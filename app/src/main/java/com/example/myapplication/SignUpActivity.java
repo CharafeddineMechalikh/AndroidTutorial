@@ -61,21 +61,19 @@ public class SignUpActivity extends HttpActivity {
             String status = jsonObject.getString("status");
             if (status.equals("success")) {
                 // Get user information
-                JSONObject userObject = jsonObject.getJSONObject("user_info");
-                String family_name = userObject.getString("family_name");
-                String first_name = userObject.getString("first_name");
-                String email = userObject.getString("email");
-                int age = userObject.getInt("age");
-                String address = userObject.getString("address");
+                String sessionToken = jsonObject.getString("session_token");
+                String sessionId = jsonObject.getString("session_id");
 
                 // Save user information to shared preferences
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("family_name", family_name);
-                editor.putString("first_name", first_name);
-                editor.putString("email", email);
-                editor.putInt("age", age);
-                editor.putString("address", address);
+                editor.putString("family_name", params.get("family_name"));
+                editor.putString("first_name", params.get("first_name"));
+                editor.putString("email", params.get("email"));
+                editor.putInt("age", Integer.parseInt(params.get("age")));
+                editor.putString("address", params.get("address"));
+                editor.putString("session_token", sessionToken);
+                editor.putString("session_id", sessionId);
                 editor.apply();
 
                 // Start HomeActivity
